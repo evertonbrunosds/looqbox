@@ -1,4 +1,4 @@
-package gitgub.evertonbrunosds.looqbox;
+package github.evertonbrunosds.looqbox;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
