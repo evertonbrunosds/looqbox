@@ -10,7 +10,7 @@ import java.util.List;
  * sobre a classe em questão, é sua capacidade de ordenar qualquer tipo de dados
  * da forma como o desenvolvedor bem quiser, ou seja, pretende ordenar uma
  * coleção composta por objetos do tipo Z, Y ou Z por meio de algum de seus
- * atributos? Sim, isso é possível por meio do comparador genérico.
+ * atributos? Sim, isso é possível através do comparador genérico.
  *
  * @param T Refere-se ao tipo genérico dos elementos ordenados.
  * @author Everton Bruno Silva dos Santos
