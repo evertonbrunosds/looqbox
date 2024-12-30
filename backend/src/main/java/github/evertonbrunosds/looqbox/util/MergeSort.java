@@ -18,34 +18,33 @@ public class MergeSort<T> {
     }
 
     public void sort(final List<T> list, final boolean reverse) {
-        if (list.size() <= 1) {
-            return;
+        if (list.size() > 1) {
+            final int middle = list.size() / 2;
+            final List<T> leftList = new ArrayList<>(list.subList(0, middle));
+            final List<T> rightList = new ArrayList<>(list.subList(middle, list.size()));
+            sort(leftList, reverse);
+            sort(rightList, reverse);
+            perform(list, leftList, rightList, reverse);
         }
-        final int middle = list.size() / 2;
-        final List<T> left = new ArrayList<>(list.subList(0, middle));
-        final List<T> right = new ArrayList<>(list.subList(middle, list.size()));
-        sort(left, reverse);
-        sort(right, reverse);
-        perform(list, left, right, reverse);
     }
 
-    private void perform(final List<T> list, final List<T> left, final List<T> right, final boolean reverse) {
+    private void perform(final List<T> list, final List<T> leftList, final List<T> rightList, final boolean reverse) {
         final Comparer<T, T, Boolean> comparerMode = reverse
                 ? (paramOne, paramTwo) -> comparer.compare(paramOne, paramTwo) > 0
                 : (paramOne, paramTwo) -> comparer.compare(paramOne, paramTwo) < 0;
-        int i = 0, j = 0, k = 0;
-        while (i < left.size() && j < right.size()) {
-            if (comparerMode.compare(left.get(i), right.get(j))) {
-                list.set(k++, left.get(i++));
+        int leftIndex = 0, rightIndex = 0, index = 0;
+        while (leftIndex < leftList.size() && rightIndex < rightList.size()) {
+            if (comparerMode.compare(leftList.get(leftIndex), rightList.get(rightIndex))) {
+                list.set(index++, leftList.get(leftIndex++));
             } else {
-                list.set(k++, right.get(j++));
+                list.set(index++, rightList.get(rightIndex++));
             }
         }
-        while (i < left.size()) {
-            list.set(k++, left.get(i++));
+        while (leftIndex < leftList.size()) {
+            list.set(index++, leftList.get(leftIndex++));
         }
-        while (j < right.size()) {
-            list.set(k++, right.get(j++));
+        while (rightIndex < rightList.size()) {
+            list.set(index++, rightList.get(rightIndex++));
         }
     }
 
