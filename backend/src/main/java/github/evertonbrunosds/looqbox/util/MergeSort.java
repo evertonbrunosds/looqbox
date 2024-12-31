@@ -18,6 +18,7 @@ import java.util.List;
  *
  * @param T Refere-se ao tipo genérico dos elementos ordenados.
  * @author Everton Bruno Silva dos Santos
+ * @see <a href="https://github.com/evertonbrunosds/looqbox/pull/5">Para mais informações, leia o Pull Request presente no GitHub</a>
  */
 public class MergeSort<T> {
 
