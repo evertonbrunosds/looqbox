@@ -26,7 +26,7 @@ public class MergeSort<T> {
         split(list, comparerMode);
     }
 
-    public void split(final List<T> list, final Comparer<T, T, Boolean> comparerMode) {
+    private void split(final List<T> list, final Comparer<T, T, Boolean> comparerMode) {
         if (list.size() > 1) {
             final int middle = list.size() / 2;
             final List<T> leftList = new ArrayList<>(list.subList(0, middle));
