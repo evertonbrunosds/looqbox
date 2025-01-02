@@ -38,7 +38,7 @@ public class PokemonSpiceService {
 
     public List<PokemonSpice> findByNameIgnoreCase(final String name) {
         return hasText(name)
-                ? findByNameIgnoreCase.computeIfAbsent(name, key -> {
+                ? findByNameIgnoreCase.computeIfAbsent(name.toLowerCase(), key -> {
                     return new Cache(TIME_INTERVAL, MEASURE_TIME, () -> {
                         return findAll().stream().filter(pokemonSpice -> {
                             return pokemonSpice.getName().toLowerCase().contains(name.toLowerCase());
