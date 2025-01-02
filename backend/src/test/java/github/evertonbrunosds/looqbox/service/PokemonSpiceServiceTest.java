@@ -41,6 +41,22 @@ public class PokemonSpiceServiceTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    public void findByNameNullName() throws Exception {
+        final PokemonSpiceService service = pokemonSpiceService();
+        final List<PokemonSpice> result = service.findByNameIgnoreCase(null);
+        assertEquals(0, result.size());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void findByNameBlankName() throws Exception {
+        final PokemonSpiceService service = pokemonSpiceService();
+        final List<PokemonSpice> result = service.findByNameIgnoreCase("    ");
+        assertEquals(0, result.size());
+        assertTrue(result.isEmpty());
+    }
+
     private static final PokemonSpiceService pokemonSpiceService() throws Exception {
         final int statusCode = 200; // SUCCESS
         final SimpleRequestMaker simpleRequestMaker = (url) -> new SimpleHttpResponse(statusCode, successBody());
