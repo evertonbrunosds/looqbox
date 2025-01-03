@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "LooqboxApplication",
+            "request": "launch",
+            "mainClass": "github.evertonbrunosds.looqbox.LooqboxApplication",
+            "projectName": "looqbox-backend"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-LooqboxApplication<backend>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "gitgub.evertonbrunosds.looqbox.LooqboxApplication",
+            "projectName": "backend",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
