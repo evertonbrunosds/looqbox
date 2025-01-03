@@ -25,11 +25,11 @@ public class PokemonSpiceService {
 
     public PokemonSpiceService(final PokemonSpiceRepository repository) {
         final Cache cache = new Cache(TIME_INTERVAL, MEASURE_TIME, repository::findAll);
-        this.repository = () -> cache.<List<PokemonSpice>>getData().orGet(emptyList());
+        this.repository = () -> cache.<List<PokemonSpice>>getData().orGet(emptyList()).stream().collect(toList());
     }
 
     public List<PokemonSpice> findAll() {
-        return repository.findAll().stream().collect(toList());
+        return repository.findAll();
     }
 
     public List<PokemonSpice> findByNameIgnoreCase(final String name) {
