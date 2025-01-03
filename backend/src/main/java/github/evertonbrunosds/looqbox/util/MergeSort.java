@@ -37,9 +37,9 @@ public class MergeSort<T> {
      * naturalmente no Java.
      */
     public MergeSort() {
-        comparer = (final T leftElement, final T rightElement) -> {
+        this((leftElement, rightElement) -> {
             return compare(leftElement.hashCode(), rightElement.hashCode());
-        };
+        });
     }
 
     /**
@@ -57,7 +57,15 @@ public class MergeSort<T> {
      *                 qualquer forma imaginável.
      */
     public MergeSort(final Comparer<T, T, Integer> comparer) {
-        this.comparer = comparer;
+        this.comparer = (leftElement, rightElement) -> {
+            return leftElement != null && rightElement != null
+                    ? comparer.compare(leftElement, rightElement)
+                    : leftElement == null && rightElement != null
+                            ? -1
+                            : leftElement != null && rightElement == null
+                                    ? 1
+                                    : 0;
+        };
     }
 
     /**
