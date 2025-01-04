@@ -1,6 +1,6 @@
 package github.evertonbrunosds.looqbox.controller;
 
-import static github.evertonbrunosds.looqbox.util.Cache.MeasureTime.MINUTE;
+import static github.evertonbrunosds.looqbox.util.Cache.TimeMeasure.MINUTE;
 import static github.evertonbrunosds.looqbox.util.Sort.Type.LENGTH;
 import static java.lang.Integer.compare;
 import static java.util.Collections.emptyList;
@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import github.evertonbrunosds.looqbox.model.PokemonSpice;
 import github.evertonbrunosds.looqbox.service.PokemonSpiceService;
 import github.evertonbrunosds.looqbox.util.Cache;
-import github.evertonbrunosds.looqbox.util.Cache.MeasureTime;
+import github.evertonbrunosds.looqbox.util.Cache.TimeMeasure;
 import github.evertonbrunosds.looqbox.util.MergeSort;
 import github.evertonbrunosds.looqbox.util.Sort;
 
@@ -28,9 +29,9 @@ import github.evertonbrunosds.looqbox.util.Sort;
 @RequestMapping("/pokemons")
 public class PokemonSpiceController {
 
-    private static final int TIME_INTERVAL = 1;
+    private final int timeInterval;
 
-    private static final MeasureTime MEASURE_TIME = MINUTE;
+    private final TimeMeasure timeMeasure;
 
     private final PokemonSpiceService service;
 
@@ -38,7 +39,9 @@ public class PokemonSpiceController {
 
     private final Map<String, Cache> pokemonsHighlightCache;
 
-    public PokemonSpiceController(final PokemonSpiceService service) {
+    public PokemonSpiceController(final PokemonSpiceService service, final Environment environment) {
+        timeInterval = environment.getProperty("cache.time.interval.controller", Integer.class,15);
+        timeMeasure = environment.getProperty("cache.time.measure.controller", TimeMeasure.class, MINUTE);
         this.service = service;
         pokemonsCache = new HashMap<>();
         pokemonsHighlightCache = new HashMap<>();
@@ -64,7 +67,7 @@ public class PokemonSpiceController {
     ) {
         final String newKey = name.toLowerCase().trim() + ";" + sort.toString();
         final List<PokemonSpiceResponse> result;
-        result = pokemonsHighlightCache.computeIfAbsent(newKey, key -> new Cache(TIME_INTERVAL, MEASURE_TIME, () -> {
+        result = pokemonsHighlightCache.computeIfAbsent(newKey, key -> new Cache(timeInterval, timeMeasure, () -> {
             return getPokemonsCached(name, sort.getType(), sort.isReverse()).stream().map(pokemonSpice -> {
                 final String highlight = hasText(name) ? pokemonSpice.replaceAll(name, "<pre>" + name + "<pre>") : null;
                 return new PokemonSpiceResponse(pokemonSpice, highlight);
@@ -75,7 +78,7 @@ public class PokemonSpiceController {
 
     private List<String> getPokemonsCached(final String name, final Sort.Type sortType, final Boolean sortReverse) {
         final String newKey = name.toLowerCase().trim() + ";" + sortType.toString() + ";" + sortReverse.toString();
-        return pokemonsCache.computeIfAbsent(newKey, key -> new Cache(TIME_INTERVAL, MEASURE_TIME, () -> {
+        return pokemonsCache.computeIfAbsent(newKey, key -> new Cache(timeInterval, timeMeasure, () -> {
             final List<String> result = hasText(name)
                     ? service.findByNameIgnoreCase(name).stream().map(PokemonSpice::getName).collect(toList())
                     : service.findAll().stream().map(PokemonSpice::getName).collect(toList());

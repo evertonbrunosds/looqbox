@@ -14,9 +14,9 @@ public class Cache {
 
     private final Process<?> onUpdate;
 
-    private final MeasureTime measureTime;
+    private final TimeMeasure timeMeasure;
 
-    public Cache(final long timeInterval, final MeasureTime measureTime, final Process<?> onUpdate) {
+    public Cache(final long timeInterval, final TimeMeasure timeMeasure, final Process<?> onUpdate) {
         if (timeInterval <= 0) {
             throw new InvalidParameterException("the 'timeInterval' parameter must be greater than zero");
         }
@@ -24,7 +24,7 @@ public class Cache {
         this.invalidAt = LocalDateTime.now();
         this.timeInterval = timeInterval;
         this.onUpdate = onUpdate;
-        this.measureTime = measureTime;
+        this.timeMeasure = timeMeasure;
     }
 
     @SuppressWarnings("unchecked")
@@ -33,7 +33,7 @@ public class Cache {
         try {
             if (updateData) {
                 data = onUpdate.get();
-                switch (measureTime) {
+                switch (timeMeasure) {
                     case SECOND:
                         invalidAt = LocalDateTime.now().plusSeconds(timeInterval);
                         break;
@@ -59,7 +59,7 @@ public class Cache {
 
     }
 
-    public enum MeasureTime {
+    public enum TimeMeasure {
         SECOND, MINUTE, HOUR
     }
 
