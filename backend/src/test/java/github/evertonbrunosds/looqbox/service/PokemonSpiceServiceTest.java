@@ -6,6 +6,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import github.evertonbrunosds.looqbox.configuration.PokemonSpiceRepositoryConfiguration;
 import github.evertonbrunosds.looqbox.configuration.PokemonSpiceRepositoryConfiguration.SimpleHttpResponse;
@@ -62,7 +66,7 @@ public class PokemonSpiceServiceTest {
         final SimpleRequestMaker simpleRequestMaker = (url) -> new SimpleHttpResponse(statusCode, successBody());
         final PokemonSpiceRepositoryConfiguration configuration = new PokemonSpiceRepositoryConfiguration(simpleRequestMaker);
         final PokemonSpiceRepository repository = configuration.pokemonSpiceRepository();
-        final PokemonSpiceService service = new PokemonSpiceService(repository);
+        final PokemonSpiceService service = new PokemonSpiceService(repository, environment());
         return service;
     }
 
@@ -4176,6 +4180,87 @@ public class PokemonSpiceServiceTest {
                     ]
                 }
                 """;
+    }
+
+    private static final Environment environment() {
+        return new Environment() {
+
+            @Override
+            public boolean containsProperty(final @Nullable String key) {
+                throw new UnsupportedOperationException("Unimplemented method 'containsProperty'");
+            }
+
+            @Override
+            @Nullable
+            public String getProperty(final @Nullable String key) {
+                throw new UnsupportedOperationException("Unimplemented method 'getProperty'");
+            }
+
+            @NonNull
+            @Override
+            public String getProperty(final @Nullable String key, final @Nullable String defaultValue) {
+                throw new UnsupportedOperationException("Unimplemented method 'getProperty'");
+            }
+
+            @Override
+            @Nullable
+            public <T> T getProperty(final @Nullable String key, final @Nullable Class<T> targetType) {
+                throw new UnsupportedOperationException("Unimplemented method 'getProperty'");
+            }
+
+            @NonNull
+            @Override
+            public <T> T getProperty(final @Nullable String key, final @Nullable Class<T> targetType, final @NonNull T defaultValue) {
+                return defaultValue;
+            }
+
+            @NonNull
+            @Override
+            public String getRequiredProperty(final @Nullable String key) throws IllegalStateException {
+                throw new UnsupportedOperationException("Unimplemented method 'getRequiredProperty'");
+            }
+
+            @NonNull
+            @Override
+            public <T> T getRequiredProperty(final @Nullable String key, final @Nullable Class<T> targetType) throws IllegalStateException {
+                throw new UnsupportedOperationException("Unimplemented method 'getRequiredProperty'");
+            }
+
+            @NonNull
+            @Override
+            public String resolvePlaceholders(final @Nullable String text) {
+                throw new UnsupportedOperationException("Unimplemented method 'resolvePlaceholders'");
+            }
+
+            @NonNull
+            @Override
+            public String resolveRequiredPlaceholders(final @Nullable String text) throws IllegalArgumentException {
+                throw new UnsupportedOperationException("Unimplemented method 'resolveRequiredPlaceholders'");
+            }
+
+            @NonNull
+            @Override
+            public String[] getActiveProfiles() {
+                throw new UnsupportedOperationException("Unimplemented method 'getActiveProfiles'");
+            }
+
+            @NonNull
+            @Override
+            public String[] getDefaultProfiles() {
+                throw new UnsupportedOperationException("Unimplemented method 'getDefaultProfiles'");
+            }
+
+            @Override
+            public boolean acceptsProfiles(final @Nullable String... profiles) {
+                throw new UnsupportedOperationException("Unimplemented method 'acceptsProfiles'");
+            }
+
+            @Override
+            public boolean acceptsProfiles(final @Nullable Profiles profiles) {
+                throw new UnsupportedOperationException("Unimplemented method 'acceptsProfiles'");
+            }
+
+        };
     }
 
 }
