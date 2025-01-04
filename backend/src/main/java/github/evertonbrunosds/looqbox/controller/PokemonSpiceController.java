@@ -36,9 +36,12 @@ public class PokemonSpiceController {
 
     private final Map<String, Cache> pokemonsCache;
 
+    private final Map<String, Cache> pokemonsHighlightCache;
+
     public PokemonSpiceController(final PokemonSpiceService service) {
         this.service = service;
         pokemonsCache = new HashMap<>();
+        pokemonsHighlightCache = new HashMap<>();
     }
 
     @GetMapping
@@ -59,11 +62,14 @@ public class PokemonSpiceController {
             @RequestParam(name = "sort", defaultValue = "ASC_ALPHABET") final Sort sort
 
     ) {
+        final String newKey = name.toLowerCase().trim() + ";" + sort.toString();
         final List<PokemonSpiceResponse> result;
-        result = getPokemonsCached(name, sort.getType(), sort.isReverse()).stream().map(pokemonSpice -> {
-            final String highlight = hasText(name) ? pokemonSpice.replaceAll(name, "<pre>" + name + "<pre>") : null;
-            return new PokemonSpiceResponse(pokemonSpice, highlight);
-        }).collect(toList());
+        result = pokemonsHighlightCache.computeIfAbsent(newKey, key -> new Cache(TIME_INTERVAL, MEASURE_TIME, () -> {
+            return getPokemonsCached(name, sort.getType(), sort.isReverse()).stream().map(pokemonSpice -> {
+                final String highlight = hasText(name) ? pokemonSpice.replaceAll(name, "<pre>" + name + "<pre>") : null;
+                return new PokemonSpiceResponse(pokemonSpice, highlight);
+            }).collect(toList());
+        })).<List<PokemonSpiceResponse>>getData().orGet(emptyList());
         return ResponseEntity.ok(new Response<>(result));
     }
 
