@@ -35,13 +35,7 @@ public class PokemonSpiceController {
             @RequestParam(name = "sort", defaultValue = "ASC_ALPHABET") final Sort sort
 
     ) {
-        final List<String> result = hasText(name)
-                ? service.findByNameIgnoreCase(name).stream().map(PokemonSpice::getName).collect(toList())
-                : service.findAll().stream().map(PokemonSpice::getName).collect(toList());
-        final MergeSort<String> mergeSort = new MergeSort<>(sort.getType().equals(LENGTH)
-                ? (paramOne, paramTwo) -> compare(paramOne.length(), paramTwo.length())
-                : String::compareTo);
-        mergeSort.sort(result, sort.isReverse());
+        final List<String> result = getPokemons(name, sort.getType(), sort.isReverse());
         return ResponseEntity.ok(new Response<>(result));
     }
 
@@ -52,19 +46,23 @@ public class PokemonSpiceController {
             @RequestParam(name = "sort", defaultValue = "ASC_ALPHABET") final Sort sort
 
     ) {
-        final List<PokemonSpiceResponse> result = hasText(name)
-                ? service.findByNameIgnoreCase(name).stream().map(pokemonSpice -> {
-                    final String highlight = pokemonSpice.getName().replaceAll(name, "<pre>" + name + "<pre>");
-                    return new PokemonSpiceResponse(pokemonSpice.getName(), highlight);
-                }).collect(toList())
-                : service.findAll().stream().map(pokemonSpice -> {
-                    return new PokemonSpiceResponse(pokemonSpice.getName(), null);
-                }).collect(toList());
-        final MergeSort<PokemonSpiceResponse> mergeSort = new MergeSort<>(sort.getType().equals(LENGTH)
-                ? (paramOne, paramTwo) -> compare(paramOne.getName().length(), paramTwo.getName().length())
-                : (paramOne, paramTwo) -> paramOne.getName().compareTo(paramTwo.getName()));
-        mergeSort.sort(result, sort.isReverse());
+        final List<PokemonSpiceResponse> result;
+        result = getPokemons(name, sort.getType(), sort.isReverse()).stream().map(pokemonSpice -> {
+            final String highlight = hasText(name) ? pokemonSpice.replaceAll(name, "<pre>" + name + "<pre>") : null;
+            return new PokemonSpiceResponse(pokemonSpice, highlight);
+        }).collect(toList());
         return ResponseEntity.ok(new Response<>(result));
+    }
+
+    private List<String> getPokemons(final String name, final Sort.Type sortType, final boolean sortReverse) {
+        final List<String> result = hasText(name)
+                ? service.findByNameIgnoreCase(name).stream().map(PokemonSpice::getName).collect(toList())
+                : service.findAll().stream().map(PokemonSpice::getName).collect(toList());
+        final MergeSort<String> mergeSort = new MergeSort<>(sortType.equals(LENGTH)
+                ? (paramOne, paramTwo) -> compare(paramOne.length(), paramTwo.length())
+                : String::compareTo);
+        mergeSort.sort(result, sortReverse);
+        return result;
     }
 
     public class Response<T> {
