@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ import github.evertonbrunosds.looqbox.repository.PokemonSpiceRepository;
 import github.evertonbrunosds.looqbox.util.Pagination;
 
 @Configuration
+@Profile("main")
 public class PokemonSpiceRepositoryConfiguration {
 
     private static final String path = "https://pokeapi.co/api/v2/pokemon-species";
