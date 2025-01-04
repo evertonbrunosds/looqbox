@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "cache.time.interval.controller",
+    "type": "java.lang.Integer",
+    "description": "it refers to the cached time interval present in the controller"
+  },
+  {
+    "name": "cache.time.interval.service",
+    "type": "java.lang.Integer",
+    "description": "it refers to the cached time interval present in the service"
+  },
+  {
+    "name": "cache.time.measure.controller",
+    "type": "github.evertonbrunosds.looqbox.util.Cache.TimeMeasure",
+    "description": "it refers to the cached time measurement present in the controller"
+  },
+  {
+    "name": "cache.time.measure.service",
+    "type": "github.evertonbrunosds.looqbox.util.Cache.TimeMeasure",
+    "description": "it refers to the cached time measurement present in the service"
+  }
+]}

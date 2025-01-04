@@ -3,5 +3,15 @@ spring:
     active: main
   application:
     name: looqbox
+
 server:
   port: 8080
+
+cache:
+  time:
+    interval:
+      controller: ${CACHE_TIME_INTERVAL_CONTROLLER}
+      service: ${CACHE_TIME_INTERVAL_SERVICE}
+    measure:
+      controller: ${CACHE_TIME_MEASURE_CONTROLLER}
+      service: ${CACHE_TIME_MEASURE_SERVICE}

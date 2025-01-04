@@ -7,7 +7,7 @@ import java.security.InvalidParameterException;
 
 import org.junit.jupiter.api.Test;
 
-import github.evertonbrunosds.looqbox.util.Cache.MeasureTime;
+import github.evertonbrunosds.looqbox.util.Cache.TimeMeasure;
 
 public class CacheTest {
 
@@ -28,7 +28,7 @@ public class CacheTest {
         final Counter counter = new Counter(); // simula um processo custoso que deve ser armazenado em cache
         final int timeInterval = 1;
         final Cache.Process<?> onUpdate = counter::value; // o determina o que deve ocorrer ao atualizar o cache
-        final Cache cache = new Cache(timeInterval, MeasureTime.SECOND, onUpdate);
+        final Cache cache = new Cache(timeInterval, TimeMeasure.SECOND, onUpdate);
 
         // verifica mil vezes se o valor contido em cache se mantém sendo 0 (zero)
         expected = 0;
@@ -64,7 +64,7 @@ public class CacheTest {
         final Cache.Process<?> onUpdate = () -> {
             throw new NullPointerException();
         };
-        final Cache cache = new Cache(timeInterval, MeasureTime.SECOND, onUpdate);
+        final Cache cache = new Cache(timeInterval, TimeMeasure.SECOND, onUpdate);
         int expected = 5;
         assertEquals(expected, cache.<Integer>getData().orGet(5));
 
@@ -73,7 +73,7 @@ public class CacheTest {
     @Test
     public void invalidIntervalOnConstructorTest() {
         try {
-            new Cache(0, MeasureTime.SECOND, () -> 5);
+            new Cache(0, TimeMeasure.SECOND, () -> 5);
             fail();
         } catch(InvalidParameterException exception) {
             final String expected = "the 'timeInterval' parameter must be greater than zero";
