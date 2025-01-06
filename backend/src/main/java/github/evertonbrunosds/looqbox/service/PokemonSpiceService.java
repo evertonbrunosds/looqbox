@@ -3,7 +3,6 @@ package github.evertonbrunosds.looqbox.service;
 import static github.evertonbrunosds.looqbox.util.Cache.TimeMeasure.HOUR;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.util.StringUtils.hasText;
 
 import java.util.List;
 
@@ -32,11 +31,7 @@ public class PokemonSpiceService {
     }
 
     public List<PokemonSpice> findByNameIgnoreCase(final String name) {
-        return hasText(name)
-                ? repository.findAll().stream().filter(pokemonSpice -> {
-                    return pokemonSpice.getName().toLowerCase().contains(name.toLowerCase());
-                }).collect(toList())
-                : emptyList();
+        return repository.findByNameIgnoreCase(name);
     }
 
 }
