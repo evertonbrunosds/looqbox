@@ -10,7 +10,7 @@ ELABOREI [PULL REQUESTS](https://github.com/evertonbrunosds/looqbox/pulls?q=is%3
 
 ## Identifique pontos de gargalo no código (se houver) e sugira uma solução.
 ### Obtenção e Deserialização
-- O primeiro foi identificado no processo de obtenção e deserialização dos presentes no endpoint [pokemon-species](https://pokeapi.co/api/v2/pokemon-species). Para isso, a solução tomada foi o uso de cache na camada de serviço, conforme descrito nos PRs abaixo:
+- O primeiro foi identificado no processo de obtenção e deserialização dos dados presentes no endpoint [pokemon-species](https://pokeapi.co/api/v2/pokemon-species). Para isso, a solução tomada foi o uso de cache na camada de serviço, conforme descrito nos PRs abaixo:
 1. > [Implementação da Camada de Serviço](https://github.com/evertonbrunosds/looqbox/pull/8)
 2. > [Refatoração do Cache da Camada de Serviço](https://github.com/evertonbrunosds/looqbox/pull/9)
 3. > [Refatoração do Cache nas Camadas de Serviço e Controle para ser Configurado via Variáveis de Ambiente](https://github.com/evertonbrunosds/looqbox/pull/15)
