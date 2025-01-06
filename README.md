@@ -32,29 +32,72 @@ Os detalhes sobre a implementação dos algoritmos de ordenação usados no proj
 
 Além disso, existem diversos tipos de notação Big-O que descrevem o comportamento de algoritmos em termos de sua eficiência. Aqui estão alguns deles:
 
-### 1. **(O(1)) - Tempo constante**
-   - O tempo de execução não varia com o tamanho da entrada. Exemplo: Acesso direto a um elemento de um array pelo índice.
+### **1. (O(1)): Espaço Constante**  
+Embora (O(1)) seja uma notação de espaço, ela é destacada por sua eficiência em termos de uso de memória. Algoritmos que operam "in-place" não utilizam espaço auxiliar adicional significativo, tornando-os ideais em dispositivos com memória limitada.
 
-### 2. **(O(log N)) - Tempo logarítmico**
-   - O tempo de execução cresce proporcionalmente ao logaritmo do tamanho da entrada. Exemplo: Busca binária.
+- **Características:**  
+  - Não consome espaço adicional além da lista original.  
+  - É especialmente útil em dispositivos com memória restrita.
 
-### 3. **(O(N log N)) - Tempo quase linear**
-   - O tempo de execução é proporcional ao tamanho da entrada multiplicado pelo logaritmo do tamanho. Exemplo: Algoritmos eficientes de ordenação, como mergesort e heapsort.
+- **Exemplos de algoritmos de ordenação:**  
+  - **Heap Sort:** Utiliza a estrutura de heap diretamente na lista.  
+  - **Insertion Sort:** Realiza operações diretamente na lista sem criar cópias.  
+  - **Selection Sort:** Ordena diretamente na lista sem alocação extra.
 
-### 4. **(O(N²)) - Tempo quadrático**
-   - O tempo de execução cresce proporcionalmente ao quadrado do tamanho da entrada. Exemplo: Ordenação por inserção ou seleção em seu pior caso.
+### **2. (O(n)): Complexidade Linear**  
+Essa notação descreve algoritmos que percorrem a lista apenas uma vez ou com poucas passagens, sendo extremamente rápidos para listas específicas.
 
-### 5. **(O(N³)) - Tempo cúbico**
-   - O tempo de execução cresce proporcionalmente ao cubo do tamanho da entrada. Exemplo: Algoritmos básicos para multiplicação de matrizes.
+- **Características:**  
+  - A eficiência depende de propriedades específicas da lista, como valores limitados ou uma distribuição uniforme.  
+  - Não é aplicável para listas genéricas.
 
-### 6. **(O(2<sup>N</sup>)) - Tempo exponencial**
-   - O tempo de execução dobra a cada incremento do tamanho da entrada. Exemplo: Resolver problemas da abordagem de força bruta em algoritmos de conjuntos (como o problema do caixeiro-viajante).
+- **Exemplos de algoritmos de ordenação:**  
+  - **Counting Sort:** Baseado na contagem de frequências.  
+  - **Bucket Sort (em melhores condições):** Divide os elementos em baldes e os ordena individualmente.  
+  - **Radix Sort:** Ordena números com base em seus dígitos.
 
-### 7. **(O(N!)) - Tempo fatorial**
-   - O tempo de execução cresce com o fatorial do tamanho da entrada. Exemplo: Algoritmos que geram todas as permutações possíveis de um conjunto.
+### **3. (O(n + k)): Complexidade Linear Adicional**  
+Essa notação expande a eficiência linear ao adicionar uma dependência de ( k ), como o intervalo máximo ou o número de dígitos nos valores. É eficiente quando ( k ) é pequeno em relação a ( n ).
 
-### 8. **(O(&radic;N)) - Raiz quadrada**
-   - O tempo de execução é proporcional à raiz quadrada do tamanho da entrada. Exemplo: Alguns algoritmos baseados em fatoração.
+- **Características:**  
+  - Depende fortemente de ( k ), sendo eficiente para listas com valores inteiros em intervalos pequenos.  
+  - Pode ser ineficiente para intervalos muito grandes.
 
-### 9. **(O(log log N)) - Logaritmo iterado**
-   - Muito eficiente, comum em algoritmos que dividem repetidamente a entrada, como em algumas variações de buscas.
+- **Exemplos de algoritmos de ordenação:**  
+  - **Counting Sort:** ( k ) representa o maior valor na lista.  
+  - **Radix Sort:** ( k ) é o número de dígitos do maior número.  
+  - **Bucket Sort:** ( k ) é o número de baldes usados para dividir os elementos.
+
+### **4. (O(n log n)): Complexidade Log-Linear**  
+Algoritmos com essa notação são altamente eficientes e frequentemente usados para listas grandes devido à sua consistência e escalabilidade.
+
+- **Características:**  
+  - Usam estratégias como "dividir e conquistar" para reduzir o número de operações.  
+  - Aplicáveis a listas genéricas, independentemente da ordem inicial.  
+
+- **Exemplos de algoritmos de ordenação:**  
+  - **Merge Sort:** Divide e combina recursivamente as sublistas.  
+  - **Heap Sort:** Usa a estrutura de heap para organizar os elementos.  
+  - **Quick Sort:** Divide a lista em torno de um pivô e ordena recursivamente (no caso médio e no melhor caso).
+
+### **5. (O(log n)): Complexidade Logarítmica (em Quick Sort)**  
+Embora essa complexidade não se aplique ao tempo principal de execução dos algoritmos de ordenação, ela aparece no espaço auxiliar necessário para operações recursivas.
+
+- **Características:**  
+  - Surge da profundidade da pilha de chamadas recursivas em algoritmos como o Quick Sort.  
+  - Representa uma eficiência significativa em termos de uso de memória.
+
+- **Exemplo de algoritmo:**  
+  - **Quick Sort (espaço auxiliar):** A profundidade máxima da recursão é (O(log n)).
+
+### **6. (O(n²)): Complexidade Quadrática**  
+Essa notação representa os algoritmos menos eficientes para listas grandes, pois a quantidade de operações cresce exponencialmente com o tamanho da lista.
+
+- **Características:**  
+  - Úteis para listas pequenas ou quase ordenadas.  
+  - Geralmente simples de implementar, mas ineficientes para listas maiores.  
+
+- **Exemplos de algoritmos de ordenação:**  
+  - **Bubble Sort:** Compara e troca elementos adjacentes repetidamente.  
+  - **Insertion Sort:** Insere elementos em suas posições corretas, um por vez.  
+  - **Selection Sort:** Seleciona o menor elemento e o posiciona no início em cada iteração.
