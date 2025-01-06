@@ -35,9 +35,9 @@ public class PokemonSpiceController {
 
     private final PokemonSpiceService service;
 
-    private final Map<String, Cache> pokemonsCache;
+    private final Map<String, Cache<List<String>>> pokemonsCache;
 
-    private final Map<String, Cache> pokemonsHighlightCache;
+    private final Map<String, Cache<List<PokemonSpiceResponse>>> pokemonsHighlightCache;
 
     public PokemonSpiceController(final PokemonSpiceService service, final Environment environment) {
         timeInterval = environment.getProperty("cache.time.interval.controller", Integer.class,15);
@@ -67,18 +67,18 @@ public class PokemonSpiceController {
     ) {
         final String newKey = name.toLowerCase().trim() + ";" + sort.toString();
         final List<PokemonSpiceResponse> result;
-        result = pokemonsHighlightCache.computeIfAbsent(newKey, key -> new Cache(timeInterval, timeMeasure, () -> {
+        result = pokemonsHighlightCache.computeIfAbsent(newKey, key -> new Cache<>(timeInterval, timeMeasure, () -> {
             return getPokemonsCached(name, sort.getType(), sort.isReverse()).stream().map(pokemonSpice -> {
                 final String highlight = hasText(name) ? pokemonSpice.replaceAll(name, "<pre>" + name + "<pre>") : null;
                 return new PokemonSpiceResponse(pokemonSpice, highlight);
             }).collect(toList());
-        })).<List<PokemonSpiceResponse>>getData().orGet(emptyList());
+        })).getData().or(emptyList());
         return ResponseEntity.ok(new Response<>(result));
     }
 
     private List<String> getPokemonsCached(final String name, final Sort.Type sortType, final Boolean sortReverse) {
         final String newKey = name.toLowerCase().trim() + ";" + sortType.toString() + ";" + sortReverse.toString();
-        return pokemonsCache.computeIfAbsent(newKey, key -> new Cache(timeInterval, timeMeasure, () -> {
+        return pokemonsCache.computeIfAbsent(newKey, key -> new Cache<>(timeInterval, timeMeasure, () -> {
             final List<String> result = hasText(name)
                     ? service.findByNameIgnoreCase(name).stream().map(PokemonSpice::getName).collect(toList())
                     : service.findAll().stream().map(PokemonSpice::getName).collect(toList());
@@ -87,7 +87,7 @@ public class PokemonSpiceController {
                     : String::compareTo);
             mergeSort.sort(result, sortReverse);
             return result;
-        })).<List<String>>getData().orGet(emptyList()).stream().collect(toList());
+        })).getData().or(emptyList()).stream().collect(toList());
     }
 
     public class Response<T> {

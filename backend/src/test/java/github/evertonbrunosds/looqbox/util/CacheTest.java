@@ -27,53 +27,53 @@ public class CacheTest {
         int expected;
         final Counter counter = new Counter(); // simula um processo custoso que deve ser armazenado em cache
         final int timeInterval = 1;
-        final Cache.Process<?> onUpdate = counter::value; // o determina o que deve ocorrer ao atualizar o cache
-        final Cache cache = new Cache(timeInterval, TimeMeasure.SECOND, onUpdate);
+        final Cache.Process<Integer> onUpdate = counter::value; // o determina o que deve ocorrer ao atualizar o cache
+        final Cache<Integer> cache = new Cache<>(timeInterval, TimeMeasure.SECOND, onUpdate);
 
         // verifica mil vezes se o valor contido em cache se mantém sendo 0 (zero)
         expected = 0;
         for (int i = 0; i < 1000; i++) {
-            assertEquals(expected, cache.<Integer>getData().orGet(Integer.MAX_VALUE));
+            assertEquals(expected, cache.getData().or(Integer.MAX_VALUE));
         }
 
         Thread.sleep(1500); // aguarda 1 segundo e meio para que o cache fique inválido
         // verifica mil vezes se o valor contido em cache se mantém sendo 1 (um)
         expected = 1;
         for (int i = 0; i < 1000; i++) {
-            assertEquals(expected, cache.<Integer>getData().orGet(Integer.MAX_VALUE));
+            assertEquals(expected, cache.getData().or(Integer.MAX_VALUE));
         }
 
         Thread.sleep(1500); // aguarda 1 segundo e meio para que o cache fique inválido
         // verifica mil vezes se o valor contido em cache se mantém sendo 2 (dois)
         expected = 2;
         for (int i = 0; i < 1000; i++) {
-            assertEquals(expected, cache.<Integer>getData().orGet(Integer.MAX_VALUE));
+            assertEquals(expected, cache.getData().or(Integer.MAX_VALUE));
         }
 
         Thread.sleep(1500); // aguarda 1 segundo e meio para que o cache fique inválido
         // verifica mil vezes se o valor contido em cache se mantém sendo 3 (três)
         expected = 3;
         for (int i = 0; i < 1000; i++) {
-            assertEquals(expected, cache.<Integer>getData().orGet(Integer.MAX_VALUE));
+            assertEquals(expected, cache.getData().or(Integer.MAX_VALUE));
         }
     }
 
     @Test
     public void getDataOrGetTest() {
         final int timeInterval = 1;
-        final Cache.Process<?> onUpdate = () -> {
+        final Cache.Process<Integer> onUpdate = () -> {
             throw new NullPointerException();
         };
-        final Cache cache = new Cache(timeInterval, TimeMeasure.SECOND, onUpdate);
+        final Cache<Integer> cache = new Cache<>(timeInterval, TimeMeasure.SECOND, onUpdate);
         int expected = 5;
-        assertEquals(expected, cache.<Integer>getData().orGet(5));
+        assertEquals(expected, cache.getData().or(5));
 
     }
 
     @Test
     public void invalidIntervalOnConstructorTest() {
         try {
-            new Cache(0, TimeMeasure.SECOND, () -> 5);
+            new Cache<>(0, TimeMeasure.SECOND, () -> 5);
             fail();
         } catch(InvalidParameterException exception) {
             final String expected = "the 'timeInterval' parameter must be greater than zero";

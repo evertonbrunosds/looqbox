@@ -22,8 +22,8 @@ public class PokemonSpiceService {
     public PokemonSpiceService(final PokemonSpiceRepository repository, final Environment environment) {
         final int timeInterval = environment.getProperty("cache.time.interval.service", Integer.class,5);
         final TimeMeasure timeMeasure = environment.getProperty("cache.time.measure.service", TimeMeasure.class, HOUR);
-        final Cache cache = new Cache(timeInterval, timeMeasure, repository::findAll);
-        this.repository = () -> cache.<List<PokemonSpice>>getData().orGet(emptyList()).stream().collect(toList());
+        final Cache<List<PokemonSpice>> cache = new Cache<>(timeInterval, timeMeasure, repository::findAll);
+        this.repository = () -> cache.getData().or(emptyList()).stream().collect(toList());
     }
 
     public List<PokemonSpice> findAll() {

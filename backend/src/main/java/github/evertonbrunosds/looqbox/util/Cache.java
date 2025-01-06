@@ -4,19 +4,19 @@ import java.security.InvalidParameterException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class Cache {
+public class Cache<T> {
 
-    private Object data;
+    private T data;
 
     private LocalDateTime invalidAt;
 
     private final long timeInterval;
 
-    private final Process<?> onUpdate;
+    private final Process<T> onUpdate;
 
     private final TimeMeasure timeMeasure;
 
-    public Cache(final long timeInterval, final TimeMeasure timeMeasure, final Process<?> onUpdate) {
+    public Cache(final long timeInterval, final TimeMeasure timeMeasure, final Process<T> onUpdate) {
         if (timeInterval <= 0) {
             throw new InvalidParameterException("the 'timeInterval' parameter must be greater than zero");
         }
@@ -27,8 +27,7 @@ public class Cache {
         this.timeMeasure = timeMeasure;
     }
 
-    @SuppressWarnings("unchecked")
-    public <T> Alternator<T> getData() {
+    public Alternator<T> getData() {
         final boolean updateData = Duration.between(invalidAt, LocalDateTime.now()).toNanos() >= 0;
         try {
             if (updateData) {
@@ -45,8 +44,7 @@ public class Cache {
                         break;
                 }
             }
-            final T convertedData = (T) data;
-            return (alternativeData) -> convertedData;
+            return (alternativeData) -> data;
         } catch (final Throwable throwable) {
             return (alternativeData) -> alternativeData;
         }
@@ -55,7 +53,7 @@ public class Cache {
     @FunctionalInterface
     public interface Alternator<A> {
 
-        A orGet(A alternative);
+        A or(A alternative);
 
     }
 
