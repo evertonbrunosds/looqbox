@@ -3,7 +3,7 @@ ELABOREI [PULL REQUESTS](https://github.com/evertonbrunosds/looqbox/pulls?q=is%3
 
 ----
 
-## Diagramação da Arquitetura
+## Crie um diagrama explicando sua arquitetura
 ![Diagrama sem nome drawio (1)](https://github.com/user-attachments/assets/2106333b-b329-4a87-8f1c-065ad9b8e2f2)
 
 ----
