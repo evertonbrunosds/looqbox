@@ -16,7 +16,7 @@ ELABOREI [PULL REQUESTS](https://github.com/evertonbrunosds/looqbox/pulls?q=is%3
 3. > [Refatoração do Cache nas Camadas de Serviço e Controle para ser Configurado via Variáveis de Ambiente](https://github.com/evertonbrunosds/looqbox/pull/15)
 
 ### Busca, Ordenação e Manipulação de Strings
-- O segundo foi identificado no processo de busca, ordenação tanto no endpoint `pokemons`, quanto no endpoint `pokemons/highlight`, indo além, este último possui um agravante: a manipulação de strings. Para isso, a solução tomada foi o uso de cache na camada de controle, conforma descrito nos PRs abaixo:
+- O segundo foi identificado no processo de busca e ordenação tanto no endpoint `pokemons`, quanto no endpoint `pokemons/highlight`, indo além, este último possui um agravante: a manipulação de strings. Para isso, a solução tomada foi o uso de cache na camada de controle, conforma descrito nos PRs abaixo:
 1. > [Implementação da Camada de Controle](https://github.com/evertonbrunosds/looqbox/pull/12)
 2. > [Refatoração do Cache nas Camadas de Serviço e Controle para ser Configurado via Variáveis de Ambiente](https://github.com/evertonbrunosds/looqbox/pull/15)
 
